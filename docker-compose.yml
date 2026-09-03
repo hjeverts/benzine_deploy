@@ -1,0 +1,62 @@
+## Verwachte layout op de server (repo's naast elkaar geclonet):
+#
+#   benzine/
+#     benzine_backend/
+#     benzine_frontend/
+#     benzine_deploy/      <- dit bestand + update.sh
+#
+# Start met: cp .env.example .env && vul de waarden in, daarna: ./update.sh
+services:
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-benzine}
+      POSTGRES_USER: ${POSTGRES_USER:-benzine}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?zet POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432" # alleen lokaal bereikbaar (bv. voor het migratiescript); niet nodig extern
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-benzine}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ../benzine_backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-benzine};Username=${POSTGRES_USER:-benzine};Password=${POSTGRES_PASSWORD}"
+      Jwt__Key: ${JWT_KEY:?zet JWT_KEY in .env (minimaal 32 tekens)}
+      Jwt__Issuer: "Benzine.Api"
+      Jwt__Audience: "Benzine.Clients"
+      Cors__AllowedOrigins__0: ${FRONTEND_ORIGIN:-http://localhost:${FRONTEND_PORT:-8081}}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+    ports:
+      - "${API_PORT:-5080}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  frontend:
+    build:
+      context: ../benzine_frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${FRONTEND_PORT:-8081}:80"
+
+volumes:
+  postgres_data:
