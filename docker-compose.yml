@@ -59,4 +59,4 @@ services:
       - "${FRONTEND_PORT:-8081}:80"
 
 volumes:
-  postgres_data:
+  postgres_data_benzine:
