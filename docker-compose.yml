@@ -15,7 +15,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-benzine}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?zet POSTGRES_PASSWORD in .env}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_benzine:/var/lib/postgresql/data
     ports:
       - "127.0.0.1:5432:5432" # alleen lokaal bereikbaar (bv. voor het migratiescript); niet nodig extern
     healthcheck:
