@@ -64,9 +64,9 @@ Opties:
 
 ## Database rechtstreeks benaderen
 
-PostgreSQL is alleen lokaal bereikbaar op poort 5432 (`127.0.0.1:5432`), bv.
+PostgreSQL is alleen lokaal bereikbaar op poort 5433 (`127.0.0.1:5433`), bv.
 voor het migratiescript of `psql`:
 
 ```bash
-psql "postgresql://benzine:<wachtwoord>@localhost:5432/benzine"
+psql "postgresql://benzine:<wachtwoord>@localhost:5433/benzine"
 ```
