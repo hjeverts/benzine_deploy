@@ -38,6 +38,13 @@ services:
       Jwt__Issuer: "Benzine.Api"
       Jwt__Audience: "Benzine.Clients"
       Cors__AllowedOrigins__0: ${FRONTEND_ORIGIN:-http://localhost:${FRONTEND_PORT:-8081}}
+      Email__Host: ${EMAIL_HOST:?zet EMAIL_HOST in .env}
+      Email__Port: ${EMAIL_PORT:-587}
+      Email__UseSsl: ${EMAIL_USE_SSL:-true}
+      Email__Username: ${EMAIL_USERNAME:-}
+      Email__Password: ${EMAIL_PASSWORD:-}
+      Email__From: ${EMAIL_FROM:?zet EMAIL_FROM in .env}
+      Email__FrontendUrl: ${EMAIL_FRONTEND_URL:?zet EMAIL_FRONTEND_URL in .env}
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
     ports:
       - "${API_PORT:-5080}:8080"
