@@ -45,6 +45,7 @@ services:
       Email__Password: ${EMAIL_PASSWORD:-}
       Email__From: ${EMAIL_FROM:?zet EMAIL_FROM in .env}
       Email__FrontendUrl: ${EMAIL_FRONTEND_URL:?zet EMAIL_FRONTEND_URL in .env}
+      Admin__BootstrapEmails: ${ADMIN_EMAILS:-}
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
     ports:
       - "${API_PORT:-5080}:8080"
