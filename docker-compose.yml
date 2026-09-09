@@ -1,9 +1,9 @@
 ## Verwachte layout op de server (repo's naast elkaar geclonet):
 #
-#   benzine/
-#     benzine_backend/
-#     benzine_frontend/
-#     benzine_deploy/      <- dit bestand + update.sh
+#   vehictory/
+#     vehictory_backend/
+#     vehictory_frontend/
+#     vehictory_deploy/      <- dit bestand + update.sh
 #
 # Start met: cp .env.example .env && vul de waarden in, daarna: ./update.sh
 services:
@@ -26,7 +26,7 @@ services:
 
   api:
     build:
-      context: ../benzine_backend
+      context: ../vehictory_backend
       dockerfile: Dockerfile
     restart: unless-stopped
     depends_on:
@@ -35,8 +35,8 @@ services:
     environment:
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-benzine};Username=${POSTGRES_USER:-benzine};Password=${POSTGRES_PASSWORD}"
       Jwt__Key: ${JWT_KEY:?zet JWT_KEY in .env (minimaal 32 tekens)}
-      Jwt__Issuer: "Benzine.Api"
-      Jwt__Audience: "Benzine.Clients"
+      Jwt__Issuer: "Vehictory.Api"
+      Jwt__Audience: "Vehictory.Clients"
       Cors__AllowedOrigins__0: ${FRONTEND_ORIGIN:-http://localhost:${FRONTEND_PORT:-8081}}
       Email__Host: ${EMAIL_HOST:?zet EMAIL_HOST in .env}
       Email__Port: ${EMAIL_PORT:-587}
@@ -57,7 +57,7 @@ services:
 
   frontend:
     build:
-      context: ../benzine_frontend
+      context: ../vehictory_frontend
       dockerfile: Dockerfile
     restart: unless-stopped
     depends_on:

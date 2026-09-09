@@ -1,9 +1,9 @@
-# benzine_deploy
+# vehictory_deploy
 
-Gecombineerde Docker Compose-stack (PostgreSQL + benzine_backend API +
-benzine_frontend) en een `update.sh`-script om alles in één keer bij te
+Gecombineerde Docker Compose-stack (PostgreSQL + vehictory_backend API +
+vehictory_frontend) en een `update.sh`-script om alles in één keer bij te
 werken. Dit is bedoeld voor de Ubuntu-server; voor losse ontwikkeling kun je
-nog steeds de `docker-compose.yml` in `benzine_backend` of `benzine_frontend`
+nog steeds de `docker-compose.yml` in `vehictory_backend` of `vehictory_frontend`
 los gebruiken.
 
 ## Verwachte layout
@@ -11,22 +11,22 @@ los gebruiken.
 Clone alle drie de repo's naast elkaar in dezelfde map, bijvoorbeeld:
 
 ```
-/opt/benzine/
-  benzine_backend/
-  benzine_frontend/
-  benzine_deploy/   <- deze repo
+/opt/vehictory/
+  vehictory_backend/
+  vehictory_frontend/
+  vehictory_deploy/   <- deze repo
 ```
 
-(`benzine_android` hoort hier niet bij; die app draait niet in Docker.)
+(`vehictory_android` hoort hier niet bij; die app draait niet in Docker.)
 
 ## Eerste keer opzetten
 
 ```bash
-cd /opt/benzine
-git clone git@github.com:hjeverts/benzine_backend.git
-git clone git@github.com:hjeverts/benzine_frontend.git
-git clone git@github.com:hjeverts/benzine_deploy.git
-cd benzine_deploy
+cd /opt/vehictory
+git clone git@github.com:hjeverts/vehictory_backend.git
+git clone git@github.com:hjeverts/vehictory_frontend.git
+git clone git@github.com:hjeverts/vehictory_deploy.git
+cd vehictory_deploy
 cp .env.example .env
 # vul POSTGRES_PASSWORD en JWT_KEY in .env in (bv. openssl rand -base64 48)
 ./update.sh
@@ -37,19 +37,19 @@ Na de eerste keer opstarten:
 - API: http://<server>:5080/api (poort instelbaar via `API_PORT`)
 - Maak via de frontend (`/register`) je eerste account aan.
 - Wil je de oude Dash/parquet-data migreren? Zie
-  `benzine_backend/scripts/README.md` (draai dat script pas **nadat** je een
+  `vehictory_backend/scripts/README.md` (draai dat script pas **nadat** je een
   account hebt aangemaakt via de frontend, zodat de voertuigen aan het juiste
   account gekoppeld kunnen worden).
 
 ## Bijwerken naar de laatste versie
 
 ```bash
-cd /opt/benzine/benzine_deploy
+cd /opt/vehictory/vehictory_deploy
 ./update.sh
 ```
 
 Dit script:
-1. Haalt de laatste commits op voor `benzine_backend` en `benzine_frontend`
+1. Haalt de laatste commits op voor `vehictory_backend` en `vehictory_frontend`
    (`git pull --ff-only` op de huidige branch).
 2. Bouwt de Docker-images opnieuw.
 3. Herstart de stack (`docker compose up -d`); de API past bij het opstarten

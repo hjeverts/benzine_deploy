@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Haalt de nieuwste code op voor benzine_backend + benzine_frontend, bouwt de
+# Haalt de nieuwste code op voor vehictory_backend + vehictory_frontend, bouwt de
 # Docker-images opnieuw en herstart de stack (postgres + api + frontend).
 #
 # Verwachte layout (repo's naast elkaar geclonet):
-#   benzine/
-#     benzine_backend/
-#     benzine_frontend/
-#     benzine_deploy/    <- dit script
+#   vehictory/
+#     vehictory_backend/
+#     vehictory_frontend/
+#     vehictory_deploy/    <- dit script
 #
 # Gebruik:
 #   ./update.sh            update + herstart alles
@@ -17,7 +17,7 @@ set -euo pipefail
 
 DEPLOY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$DEPLOY_DIR")"
-REPOS=(benzine_backend benzine_frontend)
+REPOS=(vehictory_backend vehictory_frontend)
 
 DO_PULL=true
 SHOW_LOGS=false
